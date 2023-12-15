@@ -1,0 +1,13 @@
+{
+    "instance_types": [
+        "c6i", "c6in",
+        "c5", "c5d", "c5n",
+        "p3", "p2",
+        "g4dn",
+        "g3",
+        "m7i", "m7i-flex",
+        "m6i", "m6id", "m6in", "m6idn",
+        "m5", "m5d", "m5n", "m5zn",
+        "m4"
+    ]
+}
