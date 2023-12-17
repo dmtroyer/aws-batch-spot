@@ -1,0 +1,47 @@
+{
+  "command" : ["echo", "hello world"],
+  "image"   : "busybox",
+
+  "resourceRequirements": [
+    {
+      "type"  : "VCPU",
+      "value" : "64"
+    },
+    {
+      "type"  : "MEMORY",
+      "value" : "16384"
+    }
+  ],
+
+  "volumes": [
+    {
+      "host" : {
+        "sourcePath" : "/tmp"
+      },
+      "name" : "tmp"
+    }
+  ],
+
+  "environment" : [
+    {
+      "name"  : "VARNAME",
+      "value" : "VARVAL"
+    }
+  ],
+
+  "mountPoints" : [
+    {
+      "sourceVolume"  : "tmp",
+      "containerPath" : "/tmp",
+      "readOnly"     : false
+    }
+  ],
+
+  "ulimits" : [
+    {
+      "hardLimit" : 1024,
+      "name"     : "nofile",
+      "softLimit" : 1024
+    }
+  ]
+}

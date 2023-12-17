@@ -1,7 +1,9 @@
 {
     "instance_types": [
-        "c6i", "c6in",
+        "c7i",
+        "c6i", "c6in", "c6id",
         "c5", "c5d", "c5n",
+        "c4",
         "p3", "p2",
         "g4dn",
         "g3",

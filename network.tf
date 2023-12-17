@@ -19,9 +19,10 @@ data "aws_availability_zones" "azs" {
 
 #Create subnet # 1 in us-east-1
 resource "aws_subnet" "public_subnet" {
-  availability_zone = element(data.aws_availability_zones.azs.names, 0)
-  vpc_id            = aws_vpc.vpc_master.id
-  cidr_block        = "10.0.1.0/24"
+  availability_zone       = element(data.aws_availability_zones.azs.names, 0)
+  vpc_id                  = aws_vpc.vpc_master.id
+  cidr_block              = "10.0.1.0/24"
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "${terraform.workspace}-subnet"
@@ -57,9 +58,9 @@ resource "aws_route_table" "private_route_table" {
 }
 
 resource "aws_route" "public_internet_gateway" {
-  route_table_id = aws_route_table.public_route_table.id
+  route_table_id         = aws_route_table.public_route_table.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id = aws_internet_gateway.igw.id
+  gateway_id             = aws_internet_gateway.igw.id
 }
 
 resource "aws_route_table_association" "public" {
@@ -75,7 +76,7 @@ resource "aws_route_table_association" "private" {
 
 # Create an elastic ip address for the nat gateway
 resource "aws_eip" "nat_eip" {
-  domain   = "vpc"
+  domain = "vpc"
 }
 
 resource "aws_internet_gateway" "igw" {
@@ -111,7 +112,7 @@ resource "aws_security_group" "security_group" {
   description = "Allow TCP/22"
   vpc_id      = aws_vpc.vpc_master.id
   ingress {
-    description = "Allow SSH from Dettweilers"
+    description = "Allow SSH from Home"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
