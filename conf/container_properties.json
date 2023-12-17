@@ -1,24 +1,24 @@
 {
-  "command" : ["echo", "hello world"],
-  "image"   : "busybox",
+  "command" : ["/usr/bin/FAHClientlk", "--help"],
+  "image"   : "foldingathome/fah-gpu:21.11.0",
 
   "resourceRequirements": [
     {
       "type"  : "VCPU",
-      "value" : "64"
+      "value" : "16"
     },
     {
       "type"  : "MEMORY",
-      "value" : "16384"
+      "value" : "8192"
     }
   ],
 
   "volumes": [
     {
       "host" : {
-        "sourcePath" : "/tmp"
+        "sourcePath" : "/data"
       },
-      "name" : "tmp"
+      "name" : "data"
     }
   ],
 
@@ -31,8 +31,8 @@
 
   "mountPoints" : [
     {
-      "sourceVolume"  : "tmp",
-      "containerPath" : "/tmp",
+      "sourceVolume"  : "data",
+      "containerPath" : "/data",
       "readOnly"     : false
     }
   ],
