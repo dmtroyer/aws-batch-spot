@@ -18,14 +18,36 @@ data "aws_availability_zones" "azs" {
 }
 
 #Create subnet # 1 in us-east-1
-resource "aws_subnet" "public_subnet" {
+resource "aws_subnet" "public_subnet_a" {
   availability_zone       = element(data.aws_availability_zones.azs.names, 0)
   vpc_id                  = aws_vpc.vpc_master.id
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${terraform.workspace}-subnet"
+    Name = "${terraform.workspace}-a-subnet"
+  }
+}
+
+resource "aws_subnet" "public_subnet_b" {
+  availability_zone       = element(data.aws_availability_zones.azs.names, 1)
+  vpc_id                  = aws_vpc.vpc_master.id
+  cidr_block              = "10.0.3.0/24"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${terraform.workspace}-b-subnet"
+  }
+}
+
+resource "aws_subnet" "public_subnet_c" {
+  availability_zone       = element(data.aws_availability_zones.azs.names, 2)
+  vpc_id                  = aws_vpc.vpc_master.id
+  cidr_block              = "10.0.4.0/24"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${terraform.workspace}-c-subnet"
   }
 }
 
@@ -63,8 +85,18 @@ resource "aws_route" "public_internet_gateway" {
   gateway_id             = aws_internet_gateway.igw.id
 }
 
-resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public_subnet.id
+resource "aws_route_table_association" "public_a" {
+  subnet_id      = aws_subnet.public_subnet_a.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+
+resource "aws_route_table_association" "public_b" {
+  subnet_id      = aws_subnet.public_subnet_b.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+
+resource "aws_route_table_association" "public_c" {
+  subnet_id      = aws_subnet.public_subnet_c.id
   route_table_id = aws_route_table.public_route_table.id
 }
 
@@ -90,7 +122,7 @@ resource "aws_internet_gateway" "igw" {
 # Create a NAT gateway in the public subnet with the elastic IP previously requested
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.public_subnet.id
+  subnet_id     = aws_subnet.public_subnet_a.id
 
   depends_on = [aws_eip.nat_eip]
 
@@ -117,6 +149,13 @@ resource "aws_security_group" "security_group" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["${var.public_ssh_ip}/32"]
+  }
+  ingress {
+    description = "Allow SSH from EC2 Instance Connect"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["3.16.146.0/29"]
   }
   egress {
     from_port   = 0

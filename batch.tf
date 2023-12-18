@@ -39,9 +39,9 @@ resource "aws_batch_compute_environment" "compute_environment" {
   type = "MANAGED"
 
   compute_resources {
-    type = "EC2"
-    # type = "SPOT"
-    # bid_percentage = 95
+    type = "SPOT"
+    bid_percentage = 80
+    # type = "EC2"
 
     # Roles
     spot_iam_fleet_role = aws_iam_role.ec2_spot_fleet_tagging_role.arn
@@ -49,8 +49,8 @@ resource "aws_batch_compute_environment" "compute_environment" {
 
     # Compute resources
     instance_type = local.instance_types
-    # desired_vcpus = 16
-    max_vcpus     = 16
+    desired_vcpus = 32
+    max_vcpus     = 32
     min_vcpus = 0
     launch_template {
       launch_template_id = aws_launch_template.launch_template.id
@@ -59,7 +59,7 @@ resource "aws_batch_compute_environment" "compute_environment" {
 
     # Networking
     security_group_ids = [aws_security_group.security_group.id]
-    subnets            = [aws_subnet.public_subnet.id]
+    subnets            = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id, aws_subnet.public_subnet_c.id]
   }
 }
 

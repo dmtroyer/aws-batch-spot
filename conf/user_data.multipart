@@ -9,7 +9,7 @@ packages:
 
 runcmd:
 - mkfs -t xfs /dev/sdb
-- mkdir /data
-- mount /dev/sdb /data
+- mkdir /fah
+- mount /dev/sdb /fah
 
 --==MYBOUNDARY==--

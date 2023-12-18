@@ -1,11 +1,11 @@
 {
-  "command" : ["/usr/bin/FAHClientlk", "--help"],
+  "command" : ["--exit-when-done=true", "--gui-enabled=false", "--web-enable=false", "--fold-anon=true", "--max-units=1"],
   "image"   : "foldingathome/fah-gpu:21.11.0",
 
   "resourceRequirements": [
     {
       "type"  : "VCPU",
-      "value" : "16"
+      "value" : "32"
     },
     {
       "type"  : "MEMORY",
@@ -16,9 +16,9 @@
   "volumes": [
     {
       "host" : {
-        "sourcePath" : "/data"
+        "sourcePath" : "/fah"
       },
-      "name" : "data"
+      "name" : "fah"
     }
   ],
 
@@ -31,8 +31,8 @@
 
   "mountPoints" : [
     {
-      "sourceVolume"  : "data",
-      "containerPath" : "/data",
+      "sourceVolume"  : "fah",
+      "containerPath" : "/fah",
       "readOnly"     : false
     }
   ],

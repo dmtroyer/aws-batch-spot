@@ -3,7 +3,7 @@
 Submitting a job
 
 ```
-aws batch submit-job --job-name test-$(date '+%Y-%m-%dT%k-%M-%S') --job-queue roentgen-job-queue --job-definition roentgen-job-definition
+aws batch submit-job --job-name test-demo --job-queue roentgen-job-queue --job-definition roentgen-job-definition
 ```
 
 ## Stretch Goals
